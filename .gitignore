@@ -179,3 +179,12 @@ cython_debug/
 #  refer to https://docs.cursor.com/context/ignore-files
 .cursorignore
 .cursorindexingignore
+
+# ===== 本项目：密钥与本地数据，绝对不要提交 =====
+keys.json
+keys.json.bak
+config.py
+chat_history/
+*.log
+state.json
+.idea/
