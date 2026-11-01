@@ -197,7 +197,6 @@ class HideepSeek:
     def time_prefix(self) -> str:
         return f"[当前时间：{self.now_str()}]\n"
 
-    # ---------- 当前选中的密钥 ----------
     def key_names(self, kind: str):
         return [n for n in self.keys.names() if n == kind or n.startswith(kind + "-")]
 
@@ -271,7 +270,6 @@ class HideepSeek:
         print(f"缺少可用的 {kind} 密钥，请先在「API Key 管理」里添加。")
         return None
 
-    # ---------- 密钥管理 ----------
     def ensure_keys(self):
         missing = [
             n for n in KeyStore.DEFAULT_NAMES
@@ -355,7 +353,6 @@ class HideepSeek:
                 if kind in self.KINDS:
                     self.switch_key(kind)
 
-    # ---------- 搜索 ----------
     def search_with_tavily(self, query: str) -> str:
         api_key = self.require_key("tavily")
         if not api_key:
@@ -423,7 +420,6 @@ class HideepSeek:
             except Exception as exc2:
                 return f"（所有搜索接口均不可用：{exc2}）"
 
-    # ---------- 存档 ----------
     def ensure_history_dir(self):
         if not os.path.exists(self.history_dir):
             os.makedirs(self.history_dir)
@@ -528,7 +524,6 @@ class HideepSeek:
         self.ensure_history_dir()
         return sorted(f for f in os.listdir(self.history_dir) if f.endswith(".json"))
 
-    # ---------- 文件工具 ----------
     def find_file(self, filename, valid_exts):
         ext = os.path.splitext(filename)[1].lower()
         if ext in valid_exts:
@@ -588,7 +583,6 @@ class HideepSeek:
                 result.append(msg)
         return result
 
-    # ---------- 菜单 ----------
     @staticmethod
     def choose_model():
         print("请选择模型：\n  1. deepseek-flash\n  2. deepseek-v4-pro")
@@ -698,7 +692,6 @@ class HideepSeek:
         except Exception as exc:
             print(f"查询出错：{exc}")
 
-    # ---------- 对话 ----------
     def chat_loop(self, data, filename):
         settings = data.get("settings", {})
         web_on = settings.get("web_search", False)
