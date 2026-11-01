@@ -63,9 +63,16 @@ Commands inside a conversation:
 
 ## Configuration
 
-On first run the program asks for your API keys and stores them in `keys.json`,
-encrypted with **Windows DPAPI** — only the current Windows user on this machine
-can decrypt them.
+Keys are looked up in this order:
+
+1. **Environment variables** — `DEEPSEEK_API_KEY` and `TAVILY_API_KEY`.
+   Handy for CI, scripts, or a machine you don't want to write anything on.
+2. **`keys.json`** — encrypted with **Windows DPAPI**; only the current Windows
+   user on this machine can decrypt it. The program asks for the keys on first
+   run, then never again.
+
+Use environment variables when nothing should be written to disk; use `keys.json`
+for everyday local use. Whatever is in the environment wins.
 
 `keys.json` and `state.json` are listed in `.gitignore` — **never commit them**.
 

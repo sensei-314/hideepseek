@@ -59,10 +59,15 @@ python main.py
 
 ## 配置
 
-第一次运行时会提示你填写 API Key，填写后加密保存到 `keys.json`。
+取密钥的顺序是：
 
-加密用的是 **Windows DPAPI**：密文只有「本机的当前 Windows 用户」能解开，
-换电脑、换账户都解不开。
+1. **环境变量** —— `DEEPSEEK_API_KEY`、`TAVILY_API_KEY`。
+   适合 CI、脚本，或者一台你不想往上写东西的机器。
+2. **`keys.json`** —— 用 **Windows DPAPI** 加密；密文只有「本机的当前 Windows 用户」
+   能解开。第一次运行时会问你填，之后不再打扰。
+
+不想往磁盘上落任何东西，就用环境变量；日常本地用 `keys.json`。
+**环境变量优先。**
 
 `keys.json` 和 `state.json` 已经写进 `.gitignore`——**绝对不要提交它们**。
 

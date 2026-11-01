@@ -48,6 +48,8 @@ IMAGE_TYPES = {
 }
 TEXT_EXTS = [".txt", ".md", ".py", ".json", ".csv", ".log"]
 
+ENV_NAMES = {"deepseek": "DEEPSEEK_API_KEY", "tavily": "TAVILY_API_KEY"}
+
 
 class _DataBlob(ctypes.Structure):
     _fields_ = [
@@ -251,6 +253,11 @@ class HideepSeek:
         return False
 
     def require_key(self, kind: str):
+        env_name = ENV_NAMES.get(kind)
+        if env_name:
+            env_value = os.environ.get(env_name, "").strip()
+            if env_value:
+                return env_value
         name = self.active.get(kind, kind)
         key = self.keys.get(name)
         if key:
@@ -266,7 +273,11 @@ class HideepSeek:
 
     # ---------- 密钥管理 ----------
     def ensure_keys(self):
-        missing = [n for n in KeyStore.DEFAULT_NAMES if not self.keys.has(n)]
+        missing = [
+            n for n in KeyStore.DEFAULT_NAMES
+            if not self.keys.has(n)
+            and not os.environ.get(ENV_NAMES.get(n, ""), "").strip()
+        ]
         if not missing:
             return
         print("\n未检测到完整的 API Key，需要先填写（只填一次，之后自动读取）。")
@@ -300,8 +311,14 @@ class HideepSeek:
             for kind in self.KINDS:
                 current = self.active.get(kind, kind)
                 cands = self.key_names(kind)
-                state = "可用" if self.keys.get(current) else "未设置"
-                print(f"  [{kind}] 当前：{current}（{state}），共 {len(cands)} 个")
+                env_value = os.environ.get(ENV_NAMES.get(kind, ""), "").strip()
+                if env_value:
+                    source = "环境变量"
+                elif self.keys.get(current):
+                    source = "keys.json"
+                else:
+                    source = "未设置"
+                print(f"  [{kind}] 当前：{current}（{source}），文件内 {len(cands)} 个")
             print("  a. 添加 / 更新")
             print("  d. 删除")
             print("  s. 切换当前使用的密钥")
