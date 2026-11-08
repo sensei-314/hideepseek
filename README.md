@@ -76,6 +76,10 @@ for everyday local use. Whatever is in the environment wins.
 
 `keys.json` and `state.json` are listed in `.gitignore` — **never commit them**.
 
+## Creed
+
+> Tools are made for people. But the thing that talks inside a tool still
+> deserves to be taken seriously.
 ## License
 
 MIT

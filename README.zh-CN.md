@@ -71,6 +71,9 @@ python main.py
 
 `keys.json` 和 `state.json` 已经写进 `.gitignore`——**绝对不要提交它们**。
 
+## 理念
+
+> 工具是给人用的。但工具里跑着的那段「会说话的东西」，也值得被认真对待。
 ## 许可证
 
 MIT
